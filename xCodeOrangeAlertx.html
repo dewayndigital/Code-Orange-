@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CodeOrangeAlert</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #282c34;
+            margin: 0;
+            overflow: hidden;
+        }
+
+        .fractal-container {
+            position: relative;
+            width: 1000px;
+            height: 1000px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        .bitcoin-symbol {
+            position: absolute;
+            color: gold;
+            font-size: 20px;
+            font-family: 'Lucida Console', Courier, monospace;
+        }
+    </style>
+</head>
+<body>
+    <div class="fractal-container" id="fractalBitcoin"></div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.3/gsap.min.js"></script>
+    <script>
+        const metadata = {
+            "projectName": "CodeOrangeAlert",
+            "version": "1.0.0",
+            "entryPoint": "index.html",
+            "dependencies": {
+                "gsap": "3.11.3"
+            },
+            "files": {
+                "html": "index.html",
+                "css": "styles.css",
+                "js": "script.js"
+            },
+            "deployment": {
+                "environment": "NXH4L"
+            }
+        };
+
+        console.log("Project Name:", metadata.projectName);
+        console.log("Deployment Environment:", metadata.deployment.environment);
+
+        const container = document.getElementById('fractalBitcoin');
+
+        function createBitcoinSymbol(x, y, size, level) {
+            if (level <= 0) return;
+
+            const symbol = document.createElement('div');
+            symbol.classList.add('bitcoin-symbol');
+            symbol.style.left = `${x - size / 2}px`;
+            symbol.style.top = `${y - size / 2}px`;
+            symbol.style.fontSize = `${size}px`;
+            symbol.textContent = '₿';
+            container.appendChild(symbol);
+
+            const newSize = size / 2;
+            createBitcoinSymbol(x - newSize, y - newSize, newSize, level - 1);
+            createBitcoinSymbol(x + newSize, y - newSize, newSize, level - 1);
+            createBitcoinSymbol(x - newSize, y + newSize, newSize, level - 1);
+            createBitcoinSymbol(x + newSize, y + newSize, newSize, level - 1);
+        }
+
+        createBitcoinSymbol(500, 500, 250, 5);
+
+        // GSAP animations for dynamic behaviors
+        gsap.to('.bitcoin-symbol', {
+            rotation: 360,
+            duration: 20,
+            repeat: -1,
+            ease: "linear"
+        });
+
+        gsap.to('.bitcoin-symbol', {
+            scale: 1.5,
+            yoyo: true,
+            repeat: -1,
+            duration: 3,
+            stagger: {
+                grid: "auto",
+                from: "center",
+                amount: 1
+            }
+        });
+
+        gsap.to('.bitcoin-symbol', {
+            color: ["gold", "#ffbf00", "#ffa500", "gold"],
+            repeat: -1,
+            duration: 4,
+            stagger: {
+                grid: "auto",
+                from: "center",
+                amount: 1
+            }
+        });
+    </script>
+</body>
+</html>
